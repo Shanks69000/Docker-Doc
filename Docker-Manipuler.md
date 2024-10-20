@@ -82,18 +82,18 @@ On peut voir dans l'image suivante qu'il n'apparait plus dans la liste de conten
 
     - **docker ps -qa** : Cette commande imbriquée récupère la liste des IDs de tous les conteneurs (en cours d'exécution ou arrêtés). Le flag -a de docker ps liste tous les conteneurs, et -q filtre pour ne retourner que leurs IDs.
 
-![Texte alternatif](/chemin/access/image.jpg "Titre de l'image")
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-Manipulation8.png)
 
 9. **``docker rm -f $(docker ps -q)``**
 
     - **docker rm -f $(docker ps -q)** : Supprime tous les conteneurs en cours d'exécution de manière forcée, en récupérant leurs IDs avec docker ps -q, puis en les passant à la commande docker rm -f.
 
-![Texte alternatif](/chemin/access/image.jpg "Titre de l'image")
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-Manipulation9.png)
 
 9. **``docker rm -f $(docker ps -qa)``**
 
     - **docker rm -f $(docker ps -qa**) : Supprime de manière forcée tous les conteneurs sur le système, qu'ils soient en cours d'exécution ou arrêtés. C’est une commande puissante qui permet de faire le ménage complet en supprimant tous les conteneurs en une seule opération.
 
 
-![Texte alternatif](/chemin/access/image.jpg "Titre de l'image")
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-Manipulation10.png)
 
