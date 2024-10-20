@@ -74,7 +74,7 @@ Installation de Docker : Cette commande installe les composants suivants :
 
 Cette commande liste tous les conteneurs Docker en cours d'exécution sur votre système.
 
-![Texte alternatif](/chemin/access/image.jpg "Titre de l'image")
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-FirstDoc1.png)
 
 **Exécuter un conteneur NGINX** :
 
@@ -82,7 +82,7 @@ Cette commande liste tous les conteneurs Docker en cours d'exécution sur votre 
 
 Cette commande télécharge et exécute une instance du serveur web NGINX à partir de l'image nginx:latest. Si l'image n'est pas présente localement, elle sera automatiquement téléchargée depuis Docker Hub.
 
-![Texte alternatif](/chemin/access/image.jpg "Titre de l'image")
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-FirstDoc2.png)
 
 **Afficher tous les conteneurs (actifs et inactifs)** :
 
@@ -90,7 +90,7 @@ Cette commande télécharge et exécute une instance du serveur web NGINX à par
 
 Cela affiche tous les conteneurs, qu'ils soient en cours d'exécution ou arrêtés, ainsi que leur état (ex. : "Exited" ou "Up").
 
-![Texte alternatif](/chemin/access/image.jpg "Titre de l'image")
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-FirstDoc3.png)
 
 **Exécuter NGINX en arrière-plan (mode détaché)** :
 
@@ -98,5 +98,5 @@ Cela affiche tous les conteneurs, qu'ils soient en cours d'exécution ou arrêt�
 
 Le flag -d lance le conteneur en arrière-plan, ce qui permet de continuer à utiliser le terminal sans être bloqué par le processus NGINX en cours d'exécution.
 
-![Texte alternatif](/chemin/access/image.jpg "Titre de l'image")
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-FirstDoc4.png)
 
