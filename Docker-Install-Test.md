@@ -90,7 +90,7 @@ Cette commande télécharge et exécute une instance du serveur web NGINX à par
 
 Cela affiche tous les conteneurs, qu'ils soient en cours d'exécution ou arrêtés, ainsi que leur état (ex. : "Exited" ou "Up").
 
-![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-FirstDoc3.png)
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-FristDoc3.png)
 
 **Exécuter NGINX en arrière-plan (mode détaché)** :
 
