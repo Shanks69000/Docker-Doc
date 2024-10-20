@@ -20,7 +20,6 @@ Cette commande ajoute l'utilisateur actuel (représenté par $USER) au groupe do
 - **docker** : C'est la commande principale pour interagir avec Docker. Elle permet de gérer des images, des conteneurs, des réseaux et des volumes.
 - **--help** : Il liste les sous-commandes disponibles, ainsi que des descriptions de ce que fait chaque sous-commande.
 
-![Texte alternatif](/chemin/access/image.jpg "Titre de l'image")
 
 ### 2. Quelques manipulations
 
@@ -35,7 +34,7 @@ Cette commande ajoute l'utilisateur actuel (représenté par $USER) au groupe do
 
 Cette commande te permet donc de lancer un nouveau conteneur Debian et d'y accéder en mode interactif pour exécuter des commandes directement dans le conteneur.(root@<id du conteneur>)
 
-![texte]()
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Manipulation3.png)
 
 2. **``docker run -ti --hostname Contain2 debian:latest``**
 
