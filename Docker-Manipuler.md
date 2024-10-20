@@ -51,7 +51,7 @@ La commande lance un conteneur Debian en mode interactif, comme la commande pré
 Cette commande lance un conteneur Debian avec le nom d'hôte Contain2, en mode interactif, et une fois que tu quitteras le conteneur ou que celui-ci sera arrêté, Docker supprimera automatiquement le conteneur.
 On peut voir dans l'image suivante qu'il n'apparait plus dans la liste de conteneur présent.
 
-![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-Manipulation4.png)
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Manipulation4.png)
 
 4. **``docker stop Contain1``**
 
