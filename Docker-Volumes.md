@@ -20,19 +20,25 @@ L'importance de l'UID (User ID) lors de l’utilisation des volumes réside dans
     - **docker volume create** : Crée un volume Docker. Les volumes sont utilisés pour stocker des données persistantes indépendamment du cycle de vie des conteneurs.
     - **Vnginx** : C'est le nom donné au volume. Ce volume sera utilisé pour partager des données entre le conteneur et l'hôte.
 
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes1.png)
+
 2. **``docker volume ls``**
 
     - **docker volume ls** : Liste tous les volumes existants sur le système Docker, qu'ils soient utilisés ou non.
 
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes2.png)
+
 3. **Lancement du conteneur avec un volume** :
 
-**``docker run -d --hostname -v Vnginx:/usr/share/nginx/html/ --name c1 debian:latest``**
+**``docker run -d -- hostname -v Vnginx:/usr/share/nginx/html/ --name Container1 debian:latest``**
 
 - **-d** : Lance le conteneur en arrière-plan (mode détaché).
-- **--hostname** : Définit le nom d'hôte pour le conteneur.
+- **--name** : Définit le nom d'hôte pour le conteneur.
 - **-v Vnginx:/usr/share/nginx/html/** : Monte le volume Vnginx dans le conteneur à l'emplacement /usr/share/nginx/html/. Cela permet de partager les fichiers entre l'hôte et le conteneur à cet emplacement spécifique.
 - **--name Container1** : Donne un nom au conteneur (Container1).
 - **debian:latest** : Image Debian utilisée pour créer le conteneur.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes3.png)
 
 4. **Accéder au conteneur via Bash** :
 
@@ -43,12 +49,44 @@ L'importance de l'UID (User ID) lors de l’utilisation des volumes réside dans
 - **Container1** : Nom du conteneur dans lequel la commande sera exécutée.
 - **bash** : Ouvre un shell Bash interactif dans le conteneur.
 
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes4.png)
+
+Nous constatons que nous pouvons naviguer à l'intérieur du "Container1".
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes5.png)
+
+Nous vérifions le contenu du fichier "index.html" avant de montrer le lien avec le volume après modification du fichier.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes6.png)
+
+Nous inspectons le contenu du volume avec **``docker volume inspect Vnginx``** et vérifions où se trouve le point de montage.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes7.png)
+
+Ensuite, passons à la suite.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes8.png)
+
+Maintenant, modifions le "Container1".
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes9.png)
+
+Regardons dans le volume si la modification a bien été effectuée.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes10.png)
+
+Si nous créons un nouveau conteneur, il devrait normalement récupérer le contenu du volume.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes11.png)
+
 5. **Suppression du volume** :
 
 **``docker volume rm Vnginx``**
 
 - **docker volume rm** : Supprime un volume Docker.
 - **Vnginx** : Nom du volume à supprimer. Si ce volume est encore utilisé par un conteneur, la commande échouera à moins de forcer la suppression.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-Volumes12.png)
 
 ### Gestion des Volumes avec Bind Mounts
 1. **Bind Mount** :
