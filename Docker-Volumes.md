@@ -145,7 +145,6 @@ Constatons que le contenu a été enregistré dans le volume.
 - **destination=/usr/share/nginx/html/** : Chemin dans le conteneur où le système TMPFS sera monté.
 
 Le **TMPFS** est souvent utilisé pour des besoins de stockage temporaire ou pour des performances accrues, car il évite les écritures disque.
-Gestion des Utilisateurs dans Docker
 
 Exemple : 
 
@@ -160,6 +159,8 @@ Nous entrons dans le conteneur et ajoutons test2 dans le fichier index.html, pui
 Nous recommençons et constatons que rien n'a été gardé en mémoire.
 
 ![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typetmpfs3.png)
+
+Gestion des Utilisateurs dans Docker
 
 1. **Création d’utilisateurs** :
 
