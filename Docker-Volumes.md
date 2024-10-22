@@ -100,6 +100,42 @@ Si nous créons un nouveau conteneur, il devrait normalement récupérer le cont
 
 Avec un **bind mount**, les modifications dans le répertoire /data/ sur l'hôte se répercuteront directement dans le conteneur, et inversement.
 
+Exemple :
+
+Nous créons notre conteneur comme mentionné ci-dessus, après avoir préalablement créé le dossier data (``mkdir data``) et le fichier test (``touch test``) à l'intérieur.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typemount1.png)
+
+Maintenant, nous entrons dans le conteneur et constatons que le fichier test s'y trouve.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typevolume2.png)
+
+On peut vérifier le point de montage du volume comme suit.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typemount3.png)
+
+#### Volume Mount
+
+Premièrement, nous créons le volume comme mentionné plus haut dans la documentation.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typevolume1.png)
+
+Création du conteneur avec pratiquement la même syntaxe que pour le volume de type bind mount.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typevolume2.png)
+
+Nous entrons dans le conteneur et vérifions le contenu du fichier.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typevolume3.png)
+
+Nous regardons où se trouve le point de montage du volume sur l'hôte.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typevolume4.png)
+
+Constatons que le contenu a été enregistré dans le volume.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typevolume5.png)
+
 #### TMPFS Mount
 1. **TMPFS** :
 
@@ -110,6 +146,20 @@ Avec un **bind mount**, les modifications dans le répertoire /data/ sur l'hôte
 
 Le **TMPFS** est souvent utilisé pour des besoins de stockage temporaire ou pour des performances accrues, car il évite les écritures disque.
 Gestion des Utilisateurs dans Docker
+
+Exemple : 
+
+Nous créons notre conteneur.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typetmpfs1.png)
+
+Nous entrons dans le conteneur et ajoutons test2 dans le fichier index.html, puis nous sortons du conteneur et le supprimons.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typetmpfs2.png)
+
+Nous recommençons et constatons que rien n'a été gardé en mémoire.
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typetmpfs3.png)
 
 1. **Création d’utilisateurs** :
 
