@@ -160,9 +160,9 @@ Nous recommençons et constatons que rien n'a été gardé en mémoire.
 
 ![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-typetmpfs3.png)
 
-Gestion des Utilisateurs dans Docker
+#### Gestion des Utilisateurs dans Docker
 
-1. **Création d’utilisateurs** :
+##### 1. **Création d’utilisateurs** :
 
 **``useradd -u 1111 toto``**
 **``useradd -u 1112 toto2``**
@@ -171,31 +171,156 @@ Gestion des Utilisateurs dans Docker
 - **-u 1111** : Spécifie l’UID (User ID) pour l’utilisateur. Dans ce cas, l'utilisateur toto aura l'UID 1111.
 
 Ces utilisateurs seront créés dans le container si cette commande est incluse dans le Dockerfile.
-2. **Construction de l'image Docker** :
+##### 2. **Construction de l'image Docker** :
 
-cat Dockerfile
+Après avoir créé deux utilisateurs sur l'hôte (toto et toto2), je crée un dossier nommé "**testdocker**" et, dans ce dossier, je crée un fichier "**Dockerfile**" en utilisant l'éditeur nano avec la commande suivante : **``nano Dockerfile``**. Le contenu de ce fichier est :
+
+``
 FROM debian:latest
 RUN useradd -u 1111 toto
 RUN useradd -u 1112 toto2
+``
 
-- **FROM debian:latest** : Utilise l'image Debian de base pour créer l'image Docker personnalisée.
-- **RUN useradd -u 1111 toto et RUN useradd -u 1112 toto2** : Ajoute les utilisateurs toto et toto2 avec les UID 1111 et 1112 respectivement lors de la création de l'image.
+Ce Dockerfile indique que nous allons partir de l'image Debian la plus récente (debian
+) et créer deux utilisateurs avec des UID spécifiques : toto (UID 1111) et toto2 (UID 1112).
 
-3. **Lancement d’un container avec utilisateur spécifique** :
+![docker-user1]()
 
-**``docker run -d --name Container1 -u toto -v /myvolume/:/data/ myowndebian:v1.0 sleep infinity``**
+Ensuite, je me rends dans le dossier testdocker avec cd testdocker et effectue les manipulations décrites dans l'image ci-dessus :
 
-- **-u toto** : Spécifie que le container sera lancé sous l’utilisateur xavki. L'utilisateur doit exister dans l'image Docker.
-- **-v /myvolume/:/data/** : Monte le volume /myvolume/ de l’hôte dans le répertoire /data/ du container.
+1. Création de l'image Docker :
+
+- Je construis l'image à partir du "**Dockerfile**" avec la commande **``docker build -t testimage:v1.0``**. L'option **``-t``** permet de donner un nom et une version à l'image (ici, testimage:v1.0), et le point (.) indique que le Dockerfile se trouve dans le répertoire courant.
+
+2. Vérification de l'image :
+
+- Je vérifie que l'image a bien été créée en utilisant la commande docker images, qui affiche toutes les images Docker présentes sur l'hôte.
+
+3. Création d'un dossier pour le volume :
+
+- Avant de lancer un container, je crée un dossier sur l'hôte qui sera utilisé comme volume partagé avec le conteneur : **``mkdir /testvolume``**.
+
+4. Lancement du container :
+
+- Je lance un container avec le volume lié à ce dossier avec la commande **``docker run -d --name container1 -v /testvolume/:/data/ testimage:v1.0``**. L'option **``-d``** permet de lancer le container en arrière-plan (mode détaché), --name donne un nom au container (**container1**), et -v monte le dossier de l'hôte (**/testvolume/**) dans le container au chemin "**/data/**".
+
+5. Vérification des containers en cours d'exécution :
+
+ - Avec la commande **``docker ps``**, je m'attends à voir le container en marche. Cependant, je constate qu'aucun container n'est listé.
+
+6. Vérification des containers arrêtés :
+
+- J'utilise **``docker ps -a``**, qui montre tous les containers, y compris ceux qui sont arrêtés. Je remarque que le container "**container1**" existe bien mais est arrêté.
+
+7. Suppression du container : Je décide alors de supprimer ce container en utilisant docker rm -f container1.
+
+Dans l'image suivante, je ferai des modifications supplémentaires.
+
+![docker-user2]()
+
+Dans cette étape, nous relançons la commande suivante pour démarrer le container :
+
+**``docker run -d --name container1 -v /testvolume/:/data/ testimage:v1.0 sleep infinity``**
+
+Cette fois-ci, nous ajoutons l'option "**sleep infinity**". Cela permet de maintenir le container actif indéfiniment en forçant le processus à « dormir » de façon continue, sans s'arrêter. Cela est utile pour empêcher le container de se fermer immédiatement après son lancement, puisqu'il n'y a pas de processus actif par défaut. Ainsi, tant que le container "dort", il reste en fonctionnement.
+
+1. Vérification du conteneur actif :
+
+- Avec la commande docker ps, nous pouvons maintenant voir que le container "**container1**" est bien actif.
+
+2. Accès au container :
+
+- Nous accédons à l'intérieur du container en utilisant la commande **``docker exec -ti container1 bash``**.
+- L'option **``-ti``** permet d'ouvrir un terminal interactif dans le conteneur
+-  et **``bash``** ouvre un shell Bash à l'intérieur du conteneur.
+
+3. Création d'un fichier dans le container :
+
+- Une fois dans le container, nous créons un fichier nommé "**test**" dans le répertoire monté en volume "**/data**" avec la commande **``touch /data/test``**.
+
+4. Vérification des droits sur l'hôte :
+
+- Nous quittons le container "**exit**" et revenons sur l'hôte.
+- Ensuite, nous vérifions les droits du fichier créé dans le volume partagé avec la commande **``ls -la /testvolume``**.
+
+5. Résultat :
+
+- Nous remarquons que le propriétaire du fichier "**test**" est "**root**". Cela s'explique par le fait que nous avons lancé le container sans spécifier d'utilisateur particulier. Par défaut, **Docker** exécute les processus en tant qu'utilisateur "**root**" à l'intérieur du container, ce qui explique pourquoi le fichier créé a "**root**" comme propriétaire.
+
+#### 3. **Lancement d’un container avec utilisateur spécifique** :
+
+Dans cette étape, nous relançons la commande suivante, cette fois en spécifiant un utilisateur :
+
+![docker-user3]()
+
+![docker-user4]()
+
+**``docker run -d --name container1 -v /testvolume/:/data/ -u toto testimage:v1.0 sleep infinity``**
+
+rappel:
+- **-u toto** : Spécifie que le container sera lancé sous l’utilisateur "**toto**". L'utilisateur doit exister dans l'image Docker.
+- **-v /testvolume/:/data/** : Monte le volume **/testvolume/** de l’hôte dans le répertoire **/data/** du container.
 - **sleep infinity** : Maintient le container en marche indéfiniment pour permettre des interactions ultérieures.
 
-4. **Lancement avec ID d'utilisateur spécifique** :
+L'option -u toto permet de spécifier que le container doit être exécuté avec l'utilisateur toto (précédemment créé dans l'image) plutôt que l'utilisateur "**root**" par défaut.
 
-**``docker run -d --name c1 -u 1111 -v /myvolume/:/data/ myowndebian:v1.0 sleep infinity``**
+1. Vérification de l'utilisateur en cours d'exécution :
 
-- **-u 1111** : Spécifie l'UID 1111 (au lieu du nom d'utilisateur). Cela permet d'exécuter le container sous l'utilisateur ayant cet UID.
+- Nous utilisons la commande **``ps aux | grep sleep``** pour vérifier quel utilisateur exécute le processus sleep à l'intérieur du container. Cette commande liste tous les processus actifs, et "**``grep``**" filtre ceux contenant le mot "**sleep**". Nous constatons que l'utilisateur "**toto**" est bien celui qui exécute le processus.
 
-5. **Changement temporaire d’utilisateur via docker exec** :
+2. Accès au conteneur :
+
+- Ensuite, nous accédons au container avec la commande **``docker exec -ti container1 bash``**. En ouvrant un shell Bash à l'intérieur du conteneur, nous remarquons que nous sommes connectés en tant qu'utilisateur "**toto**" et non plus en "**root**".
+
+3. Vérification du fichier créé précédemment :
+
+- Nous nous rendons dans le dossier "**/data/**" où le volume est monté, en utilisant la commande **``cd /data/``**. Ensuite, nous listons le contenu du répertoire avec **``ls``** et remarquons que le fichier "**test**" créé précédemment (lorsque nous étions connectés en tant que root) est toujours présent.
+
+#### 4. Tentative de création d'un fichier :
+
+- Nous essayons de créer un nouveau fichier avec la commande **``touch test2``**, mais nous recevons un message d'erreur indiquant que nous n'avons pas les permissions.
+
+    **Pourquoi n'avons-nous pas les permissions ?**
+
+- Le fichier "**test**" a été créé par l'utilisateur "**root**" lorsque nous avons exécuté le container précédemment sans spécifier d'utilisateur. Étant donné que les permissions du dossier "**/data/**" et du fichier "**test**" sont attribuées à "**root**", l'utilisateur "**toto**" (qui a des privilèges limités) n'a pas le droit de modifier ou d'ajouter des fichiers dans ce répertoire, sauf si les permissions sont modifiées pour permettre l'accès à d'autres utilisateurs.
+
+ **Lancement avec ID d'utilisateur spécifique** :
+
+Nous pouvons spécifier l'UID au lieu du nom d'utilisateur.
+
+**``docker run -d --name c1 -u 1111 -v /testvolume/:/data/ testimage:v1.0 sleep infinity``**
+
+- **-u 1111** : Spécifie l'UID 1111. Cela permet d'exécuter le container sous l'utilisateur ayant cet UID.
+
+#### 5. Seconde tentative de création d'un fichier :
+
+![docker-user6]()
+
+![docker-user7]()
+
+Ici, nous modifions le propriétaire du volume partagé en utilisant la commande suivante sur l'hôte :
+
+**``chown toto /testvolume/``**
+
+Cette commande change le propriétaire du répertoire "**/testvolume/**" en "**toto**", ce qui permettra à cet utilisateur d'avoir les droits nécessaires pour modifier le contenu du répertoire.
+
+1. Vérification des permissions :
+
+- Nous confirmons que le changement de propriétaire a bien été pris en compte avec la commande **``ls -la /testvolume``**. Cette commande affiche les permissions détaillées des fichiers et dossiers. Nous pouvons constater que "**toto**" est maintenant affiché comme propriétaire du dossier "**/testvolume**".
+
+2. Retour dans le container :
+
+- Ensuite, nous retournons dans le conteneur avec la commande **``docker exec -ti container1 bash``** pour ouvrir un shell Bash en tant qu'utilisateur "**toto**".
+
+3. Création d'un fichier :
+
+- Une fois dans le container, nous nous déplaçons dans le répertoire monté "**/data/**" avec la commande **``cd /data/``**. Comme ce répertoire correspond à "**/testvolume**" sur l'hôte, les permissions modifiées devraient permettre à "**toto**" de créer un fichier. Nous créons alors un fichier nommé "**test2**" avec la commande **``touch test2``**.
+
+4. Vérification des droits sur l'hôte :
+
+- Nous quittons le container (exit) et revenons sur l'hôte pour vérifier à nouveau les permissions du répertoire "**/testvolume**" avec la commande **``ls -la /testvolume``**. Nous constatons que le fichier "**test2**" est bien présent dans le répertoire, et qu'il appartient à "**toto**", l'utilisateur qui l'a créé dans le container.
+
+7. **Changement temporaire d’utilisateur via docker exec** :
 
 **``docker exec -ti toto bash``**
 **``docker exec -ti toto2 bash``**
