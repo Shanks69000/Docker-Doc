@@ -310,7 +310,7 @@ Cette commande change le propriétaire du répertoire "**/testvolume/**" en "**t
 
 2. Retour dans le container :
 
-- Ensuite, nous retournons dans le conteneur avec la commande **``docker exec -ti container1 bash``** pour ouvrir un shell Bash en tant qu'utilisateur "**toto**".
+- Ensuite, nous retournons dans le container avec la commande **``docker exec -ti container1 bash``** pour ouvrir un shell Bash en tant qu'utilisateur "**toto**".
 
 3. Création d'un fichier :
 
@@ -324,13 +324,13 @@ Cette commande change le propriétaire du répertoire "**/testvolume/**" en "**t
 
 ![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-user8.png)
 
-Dans cette image, nous testons le lancement d’un conteneur avec un utilisateur nommé "**toto3**", qui n'existe pas sur l'hôte :
+Dans cette image, nous testons le lancement d’un container avec un utilisateur nommé "**toto3**", qui n'existe pas sur l'hôte :
 
 **``docker run -d --name container1 -v /testvolume/:/data/ -u toto3 testimage:v1.0 sleep infinity``**
 
-1. Connexion au conteneur :
+1. Connexion au container :
 
-- Nous accédons au conteneur avec **``docker exec -ti container1 bash``** et voyons que nous sommes connectés en tant qu’utilisateur "**toto3**".
+- Nous accédons au container avec **``docker exec -ti container1 bash``** et voyons que nous sommes connectés en tant qu’utilisateur "**toto3**".
 
 2. Tentative de création de fichier :
 
@@ -353,7 +353,7 @@ Cela attribue "**rwx**" (lecture, écriture, exécution) aux catégories utilisa
 
 ![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-user9.png)
 
-Sur cette dernière image, nous voyons que nous pouvons nous connecter directement au conteneur en utilisant l’utilisateur existant toto :
+Sur cette dernière image, nous voyons que nous pouvons nous connecter directement au conteneur en utilisant l’utilisateur existant ""**toto**" :
 
 **``docker exec -ti -u toto container1 bash``**
 
