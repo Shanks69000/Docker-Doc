@@ -184,7 +184,7 @@ RUN useradd -u 1112 toto2
 Ce Dockerfile indique que nous allons partir de l'image Debian la plus récente (debian
 ) et créer deux utilisateurs avec des UID spécifiques : toto (UID 1111) et toto2 (UID 1112).
 
-![docker-user1]()
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-user1.png)
 
 Ensuite, je me rends dans le dossier testdocker avec cd testdocker et effectue les manipulations décrites dans l'image ci-dessus :
 
@@ -216,7 +216,7 @@ Ensuite, je me rends dans le dossier testdocker avec cd testdocker et effectue l
 
 Dans l'image suivante, je ferai des modifications supplémentaires.
 
-![docker-user2]()
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-user2.png)
 
 Dans cette étape, nous relançons la commande suivante pour démarrer le container :
 
@@ -251,9 +251,9 @@ Cette fois-ci, nous ajoutons l'option "**sleep infinity**". Cela permet de maint
 
 Dans cette étape, nous relançons la commande suivante, cette fois en spécifiant un utilisateur :
 
-![docker-user3]()
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-user3.png)
 
-![docker-user4]()
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-user4.png)
 
 **``docker run -d --name container1 -v /testvolume/:/data/ -u toto testimage:v1.0 sleep infinity``**
 
@@ -268,7 +268,7 @@ L'option -u toto permet de spécifier que le container doit être exécuté avec
 
 - Nous utilisons la commande **``ps aux | grep sleep``** pour vérifier quel utilisateur exécute le processus sleep à l'intérieur du container. Cette commande liste tous les processus actifs, et "**``grep``**" filtre ceux contenant le mot "**sleep**". Nous constatons que l'utilisateur "**toto**" est bien celui qui exécute le processus.
 
-2. Accès au conteneur :
+2. Accès au container :
 
 - Ensuite, nous accédons au container avec la commande **``docker exec -ti container1 bash``**. En ouvrant un shell Bash à l'intérieur du conteneur, nous remarquons que nous sommes connectés en tant qu'utilisateur "**toto**" et non plus en "**root**".
 
@@ -294,9 +294,9 @@ Nous pouvons spécifier l'UID au lieu du nom d'utilisateur.
 
 #### 5. Seconde tentative de création d'un fichier :
 
-![docker-user6]()
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-user6.png)
 
-![docker-user7]()
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-user7.png)
 
 Ici, nous modifions le propriétaire du volume partagé en utilisant la commande suivante sur l'hôte :
 
@@ -320,15 +320,52 @@ Cette commande change le propriétaire du répertoire "**/testvolume/**" en "**t
 
 - Nous quittons le container (exit) et revenons sur l'hôte pour vérifier à nouveau les permissions du répertoire "**/testvolume**" avec la commande **``ls -la /testvolume``**. Nous constatons que le fichier "**test2**" est bien présent dans le répertoire, et qu'il appartient à "**toto**", l'utilisateur qui l'a créé dans le container.
 
-7. **Changement temporaire d’utilisateur via docker exec** :
+#### 6. Connexion avec un utilisateur inconnu de l'hote :
 
-**``docker exec -ti toto bash``**
-**``docker exec -ti toto2 bash``**
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-user8.png)
 
-- **docker exec -ti toto bash** : Accède à un terminal Bash dans le container sous l'utilisateur toto.
-- **docker exec -ti toto2 bash** : Accède à un terminal Bash dans le container sous l'utilisateur toto2.
+Dans cette image, nous testons le lancement d’un conteneur avec un utilisateur nommé "**toto3**", qui n'existe pas sur l'hôte :
 
-Cela te permet d’interagir avec les containers en utilisant différents utilisateurs, pour tester des permissions ou des configurations spécifiques.
+**``docker run -d --name container1 -v /testvolume/:/data/ -u toto3 testimage:v1.0 sleep infinity``**
+
+1. Connexion au conteneur :
+
+- Nous accédons au conteneur avec **``docker exec -ti container1 bash``** et voyons que nous sommes connectés en tant qu’utilisateur "**toto3**".
+
+2. Tentative de création de fichier :
+
+- Nous essayons de créer un fichier dans le répertoire monté avec **``touch /data/test3``**, mais nous rencontrons une erreur "**Permission denied**". Cela se produit car l’hôte ne reconnaît pas cet utilisateur "**toto3**", et par conséquent, les permissions sur le dossier "**/testvolume**" ne lui permettent pas de créer des fichiers.
+
+3. Modification des permissions pour autoriser l'accès :
+
+- Pour qu’un utilisateur inexistant sur l’hôte puisse écrire dans le répertoire, nous devons ajuster les permissions. Dans cet exemple, j'ai utilisé la commande suivante pour attribuer des permissions complètes :
+
+**``chmod 777 /testvolume``**
+
+Cela attribue "**rwx**" (lecture, écriture, exécution) aux catégories utilisateur, groupe, et autres (user, group, other). Bien que cela fonctionne, il est fortement déconseillé de donner des permissions "**777**" pour des raisons de sécurité.
+
+4. Création du fichier après modification des permissions :
+
+- Avec ces permissions, nous constatons que "**toto3**" peut maintenant créer un fichier dans "**/data**". Nous créons "**test3**" sans rencontrer d'erreur, prouvant ainsi que les permissions élargies permettent à des utilisateurs sans correspondance sur l'hôte d’écrire dans le répertoire partagé.
+
+
+#### 7. **Changement temporaire d’utilisateur via docker exec** :
+
+![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-user9.png)
+
+Sur cette dernière image, nous voyons que nous pouvons nous connecter directement au conteneur en utilisant l’utilisateur existant toto :
+
+**``docker exec -ti -u toto container1 bash``**
+
+1. Connexion avec un utilisateur spécifique :
+
+- Avec l'option "**-u toto**", nous accédons au container en tant qu’utilisateur "**toto**" (plutôt que root par défaut). Cela nous permet d’utiliser cet utilisateur pour exécuter des commandes directement dans le container.
+
+2. Observation des permissions après déconnexion :
+
+- Après avoir quitté le container, si nous vérifions les permissions sur les fichiers dans le volume monté (par exemple, avec **``ls -la /testvolume``**), nous remarquons que les fichiers créés par "**toto3**" apparaissent avec **l’UID 1113** et non avec le nom "**toto3**".
+
+- Explication : Cela se produit parce que l’utilisateur toto3 n’existe pas sur l’hôte. Les utilisateurs sont identifiés par leur UID (User ID) et non par leur nom. Le conteneur connaît toto3 avec l'UID 1113, mais l’hôte, n'ayant pas cet utilisateur, affiche uniquement l'UID (1113) au lieu d'un nom d'utilisateur.
 
 ![Texte alternatif](/chemin/access/image.jpg "Titre de l'image")
 
