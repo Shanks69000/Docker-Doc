@@ -2,7 +2,7 @@
 
 ### 1. Introduction 
 
-**Docker** est une plateforme de virtualisation légère qui permet de créer, déployer et exécuter des applications dans des **conteneurs**. Contrairement aux machines virtuelles traditionnelles, les **conteneurs Docker** partagent le même noyau du système hôte, ce qui les rend plus légers et rapides à démarrer. Il est largement utilisé pour le développement, les tests et le déploiement d'applications dans des environnements standardisés. Les **avantages** incluent la **portabilité des applications**, la **gestion simplifiée des dépendances**, et la possibilité de faire **fonctionner plusieurs instances** d'une même application **sans conflits**.
+**Docker** est une plateforme de virtualisation légère qui permet de créer, déployer et exécuter des applications dans des **conteneurs**. Contrairement aux machines virtuelles traditionnelles, les **containers Docker** partagent le même noyau du système hôte, ce qui les rend plus légers et rapides à démarrer. Il est largement utilisé pour le développement, les tests et le déploiement d'applications dans des environnements standardisés. Les **avantages** incluent la **portabilité des applications**, la **gestion simplifiée des dépendances**, et la possibilité de faire **fonctionner plusieurs instances** d'une même application **sans conflits**.
 
 ### 2. Installation Docker sur Debian
 
@@ -13,15 +13,15 @@
 
 Cette commande permet de supprimer toute version antérieure de Docker, ainsi que ses composants associés tels que **docker-engine**, **docker.io**, **containerd**, **et runc**. Cela garantit que vous partez d'une installation propre avant de mettre en place la nouvelle version de Docker.
 
-- **docker-engine** : C'est l'ancien nom du moteur Docker. Il s'agissait du logiciel principal permettant de créer et de gérer des conteneurs sur un système. Depuis, Docker a été scindé en plusieurs composants, et docker-engine est obsolète dans les versions récentes de Docker. La suppression de ce package garantit que d'anciennes versions du moteur Docker ne provoquent pas de conflits.
+- **docker-engine** : C'est l'ancien nom du moteur Docker. Il s'agissait du logiciel principal permettant de créer et de gérer des containers sur un système. Depuis, Docker a été scindé en plusieurs composants, et docker-engine est obsolète dans les versions récentes de Docker. La suppression de ce package garantit que d'anciennes versions du moteur Docker ne provoquent pas de conflits.
 
 - **docker.io** : Il s'agit du package Docker disponible dans les dépôts par défaut d'Ubuntu et Debian. Il fournit une version de Docker, mais elle peut être obsolète par rapport à la version officielle disponible sur le dépôt Docker lui-même. La suppression de ce package assure qu'il n'y ait pas de confusion entre différentes sources de Docker lors de l'installation d'une nouvelle version.
 
-- **containerd** : C'est un runtime de conteneur indépendant de Docker qui gère l'exécution et le cycle de vie des conteneurs. Il s'agit d'une couche sous-jacente essentielle dans Docker pour la gestion des conteneurs. La suppression de containerd permet de s'assurer qu'aucune ancienne version de ce runtime ne reste active lors de la mise à jour de Docker.
+- **containerd** : C'est un runtime de container indépendant de Docker qui gère l'exécution et le cycle de vie des containers. Il s'agit d'une couche sous-jacente essentielle dans Docker pour la gestion des containers. La suppression de "**containerd**" permet de s'assurer qu'aucune ancienne version de ce runtime ne reste active lors de la mise à jour de Docker.
 
-- **runc** : C'est un outil en ligne de commande qui exécute les conteneurs spécifiés au format OCI (Open Container Initiative). runc est utilisé par containerd pour créer et exécuter les conteneurs sur le système. Le retirer permet d'éliminer toute version obsolète de cet outil, afin que la nouvelle installation de Docker utilise la version correcte et à jour de runc.
+- **runc** : C'est un outil en ligne de commande qui exécute les containers spécifiés au format OCI (Open Container Initiative). runc est utilisé par containerd pour créer et exécuter les containers sur le système. Le retirer permet d'éliminer toute version obsolète de cet outil, afin que la nouvelle installation de Docker utilise la version correcte et à jour de runc.
 
-Ces composants font partie de l'écosystème de Docker et sont tous impliqués dans la gestion des conteneurs. La suppression des versions précédentes permet d'éviter les conflits et les incohérences lors de l'installation d'une nouvelle version complète de Docker.
+Ces composants font partie de l'écosystème de Docker et sont tous impliqués dans la gestion des containers. La suppression des versions précédentes permet d'éviter les conflits et les incohérences lors de l'installation d'une nouvelle version complète de Docker.
 
 ##### Mise en place du dépôt Docker
 
@@ -60,23 +60,23 @@ Mise à jour de la liste des paquets : **sudo apt update** télécharge les info
 
 Installation de Docker : Cette commande installe les composants suivants :
 
-- **docker-ce** : le moteur de conteneur Docker.
+- **docker-ce** : le moteur de container Docker.
 - **docker-ce-cli** : l'interface en ligne de commande pour interagir avec Docker.
-- **containerd.io** : le runtime de conteneur qui gère l'exécution des conteneurs.
+- **containerd.io** : le runtime de container qui gère l'exécution des containers.
 - **docker-buildx-plugin** : le plugin pour construire des images Docker avec des fonctionnalités avancées.
-- **docker-compose-plugin** : le plugin qui permet d’utiliser Docker Compose pour gérer des applications multi-conteneurs.
+- **docker-compose-plugin** : le plugin qui permet d’utiliser Docker Compose pour gérer des applications multi-containers.
 
 ### Premier pas 
 
-**Afficher les conteneurs actifs** :
+**Afficher les containers actifs** :
 
 ``docker ps``
 
-Cette commande liste tous les conteneurs Docker en cours d'exécution sur votre système.
+Cette commande liste tous les containers Docker en cours d'exécution sur votre système.
 
 ![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-FirstDoc1.png)
 
-**Exécuter un conteneur NGINX** :
+**Exécuter un container NGINX** :
 
 ``docker run nginx:latest``
 
@@ -84,11 +84,11 @@ Cette commande télécharge et exécute une instance du serveur web NGINX à par
 
 ![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-FirstDoc2.png)
 
-**Afficher tous les conteneurs (actifs et inactifs)** :
+**Afficher tous les containers (actifs et inactifs)** :
 
 ``docker ps -a``
 
-Cela affiche tous les conteneurs, qu'ils soient en cours d'exécution ou arrêtés, ainsi que leur état (ex. : "Exited" ou "Up").
+Cela affiche tous les containers, qu'ils soient en cours d'exécution ou arrêtés, ainsi que leur état (ex. : "Exited" ou "Up").
 
 ![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/docker-FristDoc3.png)
 
@@ -96,7 +96,7 @@ Cela affiche tous les conteneurs, qu'ils soient en cours d'exécution ou arrêt�
 
 ``docker run -d nginx:latest``
 
-Le flag -d lance le conteneur en arrière-plan, ce qui permet de continuer à utiliser le terminal sans être bloqué par le processus NGINX en cours d'exécution.
+Le flag -d lance le container en arrière-plan, ce qui permet de continuer à utiliser le terminal sans être bloqué par le processus NGINX en cours d'exécution.
 
 ![](https://github.com/Shanks69000/Docker-Doc/blob/main/img-Docker/Docker-FirstDoc4.png)
 
